@@ -21,17 +21,31 @@
                     <a class="nav-link {{ 'active' if request.endpoint == 'jobseeker.resumes' or request.endpoint == 'jobseeker.resume_builder' }}" href="{{ url_for('jobseeker.resumes') }}">My Resumes</a>
                 </li>
             </ul>
+
             <ul class="navbar-nav">
+                {% if current_user.is_authenticated %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                        <i class="bi bi-person-circle me-1"></i>{{ current_user.first_name }}
+                        <i class="bi bi-person-circle me-1"></i>{{ current_user.first_name or current_user.username }}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="{{ url_for('jobseeker.profile') }}">Profile</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">Logout</a></li>
+                        <li>
+                            <form method="POST" action="{{ url_for('auth.logout') }}">
+                                <button type="submit" class="dropdown-item text-danger">Logout</button>
+                            </form>
+                        </li>
                     </ul>
                 </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('auth.register') }}">Sign Up</a>
+                </li>
+                {% endif %}
             </ul>
         </div>
     </div>
