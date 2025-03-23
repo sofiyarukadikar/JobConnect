@@ -45,12 +45,7 @@ app = create_app()
 
 # Custom datetime filter
 
-@auth_bp.route('/logout')
-@login_required  # Ensure only logged-in users can access this route
-def logout():
-    logout_user()  # This function comes from Flask-Login
-    flash('You have been successfully logged out.', 'success')
-    return redirect(url_for('public.index'))
+
 @app.template_filter('datetime')
 def format_datetime(value):
     if value is None:
