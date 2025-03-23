@@ -60,7 +60,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <span class="badge bg-light text-dark">{{ job.job_type }}</span>
-                            <!-- <small class="text-muted">{{ job.created_at|datetime }}</small> -->
+                            <small class="text-muted">{{ job.created_at|datetime }}</small>
                         </div>
                         <h5 class="card-title">{{ job.title }}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">{{ job.recruiter.company }}</h6>
@@ -422,3 +422,22 @@
     </div>
 </section>
 {% endblock %}
+{% if current_user.is_authenticated %}
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        {{ current_user.username }}
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <li><a class="dropdown-item" href="{{ url_for('user.profile') }}">My Profile</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">Logout</a></li>
+    </ul>
+</li>
+{% else %}
+<li class="nav-item">
+    <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="{{ url_for('auth.register') }}">Register</a>
+</li>
+{% endif %}
