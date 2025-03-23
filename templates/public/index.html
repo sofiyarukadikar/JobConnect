@@ -1,0 +1,424 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}JobConnect - Find Your Dream Job{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero bg-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 py-4">
+                <h1 class="display-4 fw-bold mb-3">Find Your Dream Job Today</h1>
+                <p class="lead mb-4">Connect with thousands of employers and opportunities that match your skills and career goals.</p>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{{ url_for('auth.register', user_type='jobseeker') }}" class="btn btn-light btn-lg px-4">Find Jobs</a>
+                    <a href="{{ url_for('auth.register', user_type='recruiter') }}" class="btn btn-outline-light btn-lg px-4">Post a Job</a>
+                </div>
+            </div>
+            <div class="col-lg-6 d-none d-lg-block">
+                <img src="{{ url_for('static', filename='images/hero-image.svg') }}" alt="Job Search" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Search Bar Section -->
+<section class="py-4 bg-light">
+    <div class="container">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <form action="{{ url_for('public.browse_jobs') }}" method="GET" class="row g-3">
+                    <div class="col-md-5">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control" name="q" placeholder="Job title, keywords, or company">
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                            <input type="text" class="form-control" name="location" placeholder="City, state, or remote">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100">Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Jobs Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Featured Jobs</h2>
+        <div class="row">
+            {% for job in featured_jobs %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="badge bg-light text-dark">{{ job.job_type }}</span>
+                            <!-- <small class="text-muted">{{ job.created_at|datetime }}</small> -->
+                        </div>
+                        <h5 class="card-title">{{ job.title }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ job.recruiter.company }}</h6>
+                        <div class="mb-3">
+                            <i class="bi bi-geo-alt text-muted me-1"></i> {{ job.location }}
+                        </div>
+                        <p class="card-text">{{ job.description|truncate(100) }}</p>
+                    </div>
+                    <div class="card-footer bg-white">
+                        <a href="#" class="btn btn-outline-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{{ url_for('public.browse_jobs') }}" class="btn btn-outline-primary">View All Jobs <i class="bi bi-arrow-right"></i></a>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">How JobConnect Works</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 bg-transparent">
+                    <div class="card-body text-center">
+                        <div class="icon-circle bg-primary text-white mx-auto mb-4">
+                            <i class="bi bi-person-plus-fill"></i>
+                        </div>
+                        <h4>Create Your Profile</h4>
+                        <p>Sign up and build your professional profile or upload your existing resume to get started.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 bg-transparent">
+                    <div class="card-body text-center">
+                        <div class="icon-circle bg-primary text-white mx-auto mb-4">
+                            <i class="bi bi-search"></i>
+                        </div>
+                        <h4>Find Matching Jobs</h4>
+                        <p>Search and filter jobs that match your skills, experience, and career preferences.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 bg-transparent">
+                    <div class="card-body text-center">
+                        <div class="icon-circle bg-primary text-white mx-auto mb-4">
+                            <i class="bi bi-send-fill"></i>
+                        </div>
+                        <h4>Apply with One Click</h4>
+                        <p>Apply to jobs instantly with your profile and track your application status in real-time.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Success Stories</h2>
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex mb-3">
+                            <div class="text-warning">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                        </div>
+                        <p class="card-text">"I found my dream job at a tech startup within just two weeks of using JobConnect. The interface was intuitive and the job recommendations were spot-on!"</p>
+                    </div>
+                    <div class="card-footer bg-white">
+                        <div class="d-flex align-items-center">
+                            <img src="https://via.placeholder.com/50" alt="User" class="rounded-circle me-3">
+                            <div>
+                                <h6 class="mb-0">Sarah Johnson</h6>
+                                <small class="text-muted">Software Developer</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex mb-3">
+                            <div class="text-warning">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                        </div>
+                        <p class="card-text">"As a recruiter, JobConnect has transformed our hiring process. We've reduced our time-to-hire by 40% and found better qualified candidates."</p>
+                    </div>
+                    <div class="card-footer bg-white">
+                        <div class="d-flex align-items-center">
+                            <img src="https://via.placeholder.com/50" alt="User" class="rounded-circle me-3">
+                            <div>
+                                <h6 class="mb-0">Michael Rodriguez</h6>
+                                <small class="text-muted">HR Manager, TechCorp</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex mb-3">
+                            <div class="text-warning">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                        </div>
+                        <p class="card-text">"JobConnect helped me transition careers after 10 years in my previous industry. The resources and job matching were exactly what I needed to make the change."</p>
+                    </div>
+                    <div class="card-footer bg-white">
+                        <div class="d-flex align-items-center">
+                            <img src="https://via.placeholder.com/50" alt="User" class="rounded-circle me-3">
+                            <div>
+                                <h6 class="mb-0">Lisa Chang</h6>
+                                <small class="text-muted">Marketing Specialist</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Job Categories Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Popular Job Categories</h2>
+        <div class="row g-4">
+            <div class="col-md-3 col-sm-6">
+                <div class="card h-100 shadow-sm text-center">
+                    <div class="card-body">
+                        <div class="category-icon mb-3">
+                            <i class="bi bi-code-square text-primary fs-1"></i>
+                        </div>
+                        <h5>Technology</h5>
+                        <p class="text-muted">1,245 open positions</p>
+                        <a href="{{ url_for('public.browse_jobs', category='technology') }}" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="card h-100 shadow-sm text-center">
+                    <div class="card-body">
+                        <div class="category-icon mb-3">
+                            <i class="bi bi-briefcase text-primary fs-1"></i>
+                        </div>
+                        <h5>Business</h5>
+                        <p class="text-muted">857 open positions</p>
+                        <a href="{{ url_for('public.browse_jobs', category='business') }}" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="card h-100 shadow-sm text-center">
+                    <div class="card-body">
+                        <div class="category-icon mb-3">
+                            <i class="bi bi-graph-up text-primary fs-1"></i>
+                        </div>
+                        <h5>Marketing</h5>
+                        <p class="text-muted">643 open positions</p>
+                        <a href="{{ url_for('public.browse_jobs', category='marketing') }}" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="card h-100 shadow-sm text-center">
+                    <div class="card-body">
+                        <div class="category-icon mb-3">
+                            <i class="bi bi-hospital text-primary fs-1"></i>
+                        </div>
+                        <h5>Healthcare</h5>
+                        <p class="text-muted">938 open positions</p>
+                        <a href="{{ url_for('public.browse_jobs', category='healthcare') }}" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <a href="{{ url_for('public.browse_categories') }}" class="btn btn-outline-primary">View All Categories <i class="bi bi-arrow-right"></i></a>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h2 class="mb-4">Ready to Start Your Career Journey?</h2>
+        <p class="lead mb-4">Join thousands of professionals who've found their dream jobs on JobConnect.</p>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="{{ url_for('auth.register', user_type='jobseeker') }}" class="btn btn-light btn-lg px-4">Sign Up Now</a>
+            <a href="{{ url_for('public.browse_jobs') }}" class="btn btn-outline-light btn-lg px-4">Browse Jobs</a>
+        </div>
+    </div>
+</section>
+
+<!-- For Employers Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <img src="{{ url_for('static', filename='images/employers.svg') }}" alt="For Employers" class="img-fluid">
+            </div>
+            <div class="col-lg-6">
+                <h2 class="mb-4">For Employers and Recruiters</h2>
+                <p class="lead mb-4">Find the perfect candidates for your open positions with our advanced matching algorithm and talent pool.</p>
+                <ul class="list-unstyled">
+                    <li class="mb-3"><i class="bi bi-check-circle-fill text-primary me-2"></i> Access to thousands of qualified candidates</li>
+                    <li class="mb-3"><i class="bi bi-check-circle-fill text-primary me-2"></i> Smart matching to find the right talent</li>
+                    <li class="mb-3"><i class="bi bi-check-circle-fill text-primary me-2"></i> Advanced screening and filtering tools</li>
+                    <li class="mb-4"><i class="bi bi-check-circle-fill text-primary me-2"></i> Analytics and insights for your hiring process</li>
+                </ul>
+                <a href="{{ url_for('auth.register', user_type='recruiter') }}" class="btn btn-primary btn-lg">Post a Job</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Frequently Asked Questions</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item mb-3 shadow-sm">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                How much does it cost to use JobConnect?
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                JobConnect is completely free for job seekers. Employers and recruiters can choose from various subscription plans depending on their hiring needs, starting with a free basic plan.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item mb-3 shadow-sm">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                How do I create an effective profile?
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                To create an effective profile, make sure to complete all sections, highlight your key skills and experiences, and upload a professional photo. Our system will guide you through the process and provide tips to optimize your profile visibility.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item mb-3 shadow-sm">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                Can I apply for multiple jobs at once?
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes, you can apply for multiple jobs simultaneously using our Quick Apply feature. Your profile and resume will be submitted to all selected positions, saving you time in your job search.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item shadow-sm">
+                        <h2 class="accordion-header" id="headingFour">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                How long does it take to get a response after applying?
+                            </button>
+                        </h2>
+                        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Response times vary depending on employers. However, our system encourages recruiters to respond within 7 days. You can track the status of your applications in your dashboard.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <a href="{{ url_for('public.faq') }}" class="btn btn-outline-primary">View All FAQs <i class="bi bi-arrow-right"></i></a>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-lg border-0">
+                    <div class="card-body p-5 text-center">
+                        <h3 class="mb-3">Stay Updated with Job Alerts</h3>
+                        <p class="text-muted mb-4">Get personalized job recommendations delivered to your inbox.</p>
+                        <form action="{{ url_for('public.subscribe_newsletter') }}" method="POST" class="row g-3 justify-content-center">
+                            <div class="col-md-8">
+                                <input type="email" class="form-control form-control-lg" name="email" placeholder="Your email address" required>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-primary btn-lg w-100">Subscribe</button>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="privacyCheck" required>
+                                    <label class="form-check-label small text-muted" for="privacyCheck">
+                                        I agree to receive email notifications and accept the <a href="{{ url_for('public.privacy_policy') }}">Privacy Policy</a>
+                                    </label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Partnership Logos Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h5 class="text-center text-muted mb-4">Trusted by Leading Companies</h5>
+        <div class="row align-items-center justify-content-center">
+            <div class="col-6 col-md-2 mb-4 mb-md-0">
+                <img src="{{ url_for('static', filename='images/partners/partner1.svg') }}" alt="Partner 1" class="img-fluid opacity-75">
+            </div>
+            <div class="col-6 col-md-2 mb-4 mb-md-0">
+                <img src="{{ url_for('static', filename='images/partners/partner2.svg') }}" alt="Partner 2" class="img-fluid opacity-75">
+            </div>
+            <div class="col-6 col-md-2 mb-4 mb-md-0">
+                <img src="{{ url_for('static', filename='images/partners/partner3.svg') }}" alt="Partner 3" class="img-fluid opacity-75">
+            </div>
+            <div class="col-6 col-md-2 mb-4 mb-md-0">
+                <img src="{{ url_for('static', filename='images/partners/partner4.svg') }}" alt="Partner 4" class="img-fluid opacity-75">
+            </div>
+            <div class="col-6 col-md-2">
+                <img src="{{ url_for('static', filename='images/partners/partner5.svg') }}" alt="Partner 5" class="img-fluid opacity-75">
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
